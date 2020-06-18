@@ -2,6 +2,7 @@
 using GalaSoft.MvvmLight.Command;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -10,6 +11,10 @@ namespace WpfApp2
 {
     public class ViewModel: ViewModelBase
     {
+        public ViewModel() {
+            ListItems = new ObservableCollection<string> { "string1", "string2", "string3" };
+        }
+
         private RelayCommand _removeCommand;
 
         public RelayCommand RemoveCommand {
@@ -48,6 +53,20 @@ namespace WpfApp2
 
         private void SetIndexCommandAction() {
 
+        }
+
+        ObservableCollection<string> _listItems;
+
+        public ObservableCollection<string> ListItems {
+            get {
+                return _listItems;
+            }
+            set {
+                if (value != _listItems) {
+                    _listItems = value;
+                    RaisePropertyChanged(nameof(ListItems));
+                }
+            }
         }
 
 
