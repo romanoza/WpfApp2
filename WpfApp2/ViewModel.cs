@@ -24,11 +24,11 @@ namespace WpfApp2
         }
 
         private void RemoveCommandAction() {
-
+            ListItems.RemoveAt(SelectedItemIndex);
         }
 
         private bool RemoveCommandCanExecute() {
-            return true;
+            return SelectedItemIndex >= 0 && SelectedItemIndex < ListItems.Count;
         }
 
         private RelayCommand _addCommand;
@@ -40,7 +40,7 @@ namespace WpfApp2
         }
 
         private void AddCommandAction() {
-
+            ListItems.Add("New string");
         }
 
         private RelayCommand _setIndexCommand;
@@ -52,7 +52,7 @@ namespace WpfApp2
         }
 
         private void SetIndexCommandAction() {
-
+            SelectedItemIndex = 2;
         }
 
         ObservableCollection<string> _listItems;
@@ -64,11 +64,29 @@ namespace WpfApp2
             set {
                 if (value != _listItems) {
                     _listItems = value;
-                    RaisePropertyChanged(nameof(ListItems));
+                    RaisePropertyChanged(() => ListItems);
                 }
             }
         }
 
+        private int _selectedItemIndex = -1;
 
+        public int SelectedItemIndex {
+            get {
+                return _selectedItemIndex;
+            }
+            set {
+                if (value != _selectedItemIndex) {
+                    _selectedItemIndex = value;
+                    RaisePropertyChanged(() => SelectedItemIndex);
+                    RemoveCommand.RaiseCanExecuteChanged();
+
+                    // label
+                    RaisePropertyChanged(() => SelectedIndex);
+                }
+            }
+        }
+
+        public string SelectedIndex => $"Sel ind: {SelectedItemIndex}";
     }
 }
